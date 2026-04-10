@@ -22,4 +22,9 @@ public interface PostMapper {
 
     @Select("SELECT * FROM post WHERE user_id = #{userId}")
     List<Post> findByUserId(Integer userId);
+
+
+    List<Post> searchPosts(@Param("title") String title, @Param("content") String content, @Param("type") String type);
+
+
 }

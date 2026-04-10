@@ -10,4 +10,5 @@ public interface PostService {
     void deletePost(Integer id);
     void deleteBatchPosts(String ids);
     List<Post> getMyPosts(Integer userId);
+    List<Post> searchPosts(String title, String content, String type, Integer pageNum, Integer pageSize);
 }
