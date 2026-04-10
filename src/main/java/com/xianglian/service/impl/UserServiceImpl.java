@@ -22,19 +22,4 @@ public class UserServiceImpl implements UserService {
     public void updateProfile(User user) {
         userMapper.update(user);
     }
-
-    @Override
-    public User login(String username, String password) {
-        User user = userMapper.findByUsername(username);
-        if(user != null && user.getPassword().equals(password)) {
-            return user;
-        }
-        return null;
-    }
-
-    @Override
-    @Transactional
-    public void register(User user) {
-        userMapper.insert(user);
-    }
 }

@@ -21,16 +21,6 @@ public class PostController {
         return Result.success(posts);
     }
 
-    @GetMapping("/search")
-    public Result searchPosts(@RequestParam(required = false) String title,
-                              @RequestParam(required = false) String content,
-                              @RequestParam(required = false) String type,
-                              @RequestParam(required = false, defaultValue = "1") Integer pageNum,
-                              @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
-        List<Post> posts = postService.searchPosts(title, content, type, pageNum, pageSize);
-        return Result.success(posts);
-    }
-
     @PostMapping
     public Result createPost(@RequestBody Post post, HttpServletRequest request) {
         Integer userId = (Integer) request.getAttribute("userId");

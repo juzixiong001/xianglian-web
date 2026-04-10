@@ -1,6 +1,5 @@
 package com.xianglian.service.impl;
 
-import com.github.pagehelper.PageHelper;
 import com.xianglian.mapper.PostMapper;
 import com.xianglian.pojo.Post;
 import com.xianglian.service.PostService;
@@ -41,17 +40,5 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<Post> getMyPosts(Integer userId) {
         return postMapper.findByUserId(userId);
-    }
-
-    @Override
-    public List<Post> searchPosts(String title, String content, String type, Integer pageNum, Integer pageSize) {
-        if (pageNum == null || pageNum <= 0) {
-            pageNum = 1;
-        }
-        if (pageSize == null || pageSize <= 0) {
-            pageSize = 10;
-        }
-        PageHelper.startPage(pageNum, pageSize);
-        return postMapper.searchPosts(title, content, type);
     }
 }
