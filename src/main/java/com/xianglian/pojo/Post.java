@@ -11,6 +11,10 @@ public class Post {
     private String title;
     private String content;
     private String type;
+    private String area;
+    private String price;
+    private String contact;
+    private String images;
     private Date createTime;
     private Date updateTime;
 }

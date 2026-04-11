@@ -6,10 +6,12 @@ import com.xianglian.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping("api/policies")
+@RequestMapping("/api/policies")
 public class PolicyController {
     @Autowired
     private PolicyService policyService;
@@ -18,10 +20,13 @@ public class PolicyController {
     @GetMapping
     public Result getAllPolicies() {
         List<Policy> policies = policyService.getAllPolicies();
-        return Result.success(policies);
+        Map<String, Object> data = new HashMap<>();
+        data.put("total", policies.size());
+        data.put("list", policies);
+        return Result.success(data);
     }
 
-    //// 获取政策详情
+    // 获取政策详情
     @GetMapping("/{id}")
     public Result getPolicyById(@PathVariable Integer id) {
         Policy policy = policyService.getPolicyById(id);
@@ -57,5 +62,19 @@ public class PolicyController {
         return Result.success();
     }
 
-
+    // 搜索政策
+    @GetMapping("/search")
+    public Result searchPolicies(@RequestParam(required = false) String title,
+                                @RequestParam(required = false) String type,
+                                @RequestParam(required = false) String area,
+                                @RequestParam(required = false, defaultValue = "time_desc") String sort,
+                                @RequestParam(required = false, defaultValue = "1") Integer page,
+                                @RequestParam(required = false, defaultValue = "10") Integer size) {
+        List<Policy> policies = policyService.searchPolicies(title, type, area, sort, page, size);
+        int total = policyService.getSearchTotal(title, type, area);
+        Map<String, Object> data = new HashMap<>();
+        data.put("total", total);
+        data.put("list", policies);
+        return Result.success(data);
+    }
 }

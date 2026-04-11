@@ -10,7 +10,7 @@ public interface PostMapper {
     @Select("SELECT * FROM post")
     List<Post> findAll();
 
-    @Insert("INSERT INTO post (user_id, title, content, type, create_time, update_time) VALUES (#{userId}, #{title}, #{content}, #{type}, NOW(), NOW())")
+    @Insert("INSERT INTO post (user_id, title, content, type, area, price, contact, images, create_time, update_time) VALUES (#{userId}, #{title}, #{content}, #{type}, #{area}, #{price}, #{contact}, #{images}, NOW(), NOW())")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insert(Post post);
 
@@ -22,4 +22,7 @@ public interface PostMapper {
 
     @Select("SELECT * FROM post WHERE user_id = #{userId}")
     List<Post> findByUserId(Integer userId);
+
+    List<Post> searchPosts(@Param("title") String title, @Param("content") String content, @Param("type") String type, @Param("sort") String sort);
+
 }
