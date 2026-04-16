@@ -1,5 +1,6 @@
 package com.xianglian.service;
 
+import com.github.pagehelper.PageInfo;
 import com.xianglian.pojo.Post;
 
 import java.util.List;
@@ -10,6 +11,5 @@ public interface PostService {
     void deletePost(Integer id);
     void deleteBatchPosts(String ids);
     List<Post> getMyPosts(Integer userId);
-    List<Post> searchPosts(String title, String content, String type, String sort, Integer page, Integer size);
-    int getSearchTotal(String title, String content, String type);
+    PageInfo<Post> searchPosts(String title, String content, String type, String sort, Integer page, Integer size);
 }

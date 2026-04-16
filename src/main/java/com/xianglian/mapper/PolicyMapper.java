@@ -25,7 +25,7 @@ public interface PolicyMapper {
     @Delete("DELETE FROM policy WHERE id = #{id}")
     void deleteById(Integer id);
 
-    @Delete("DELETE FROM policy WHERE id IN (#{ids})")
+    @Delete("DELETE FROM policy WHERE id IN (${ids})")
     void deleteBatch(@Param("ids") String ids);
 
     List<Policy> searchPolicies(@Param("title") String title, @Param("type") String type, @Param("area") String area, @Param("sort") String sort);

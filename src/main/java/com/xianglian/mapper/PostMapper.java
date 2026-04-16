@@ -17,7 +17,7 @@ public interface PostMapper {
     @Delete("DELETE FROM post WHERE id = #{id}")
     void deleteById(Integer id);
 
-    @Delete("DELETE FROM post WHERE id IN (#{ids})")
+    @Delete("DELETE FROM post WHERE id IN (${ids})")
     void deleteBatch(@Param("ids") String ids);
 
     @Select("SELECT * FROM post WHERE user_id = #{userId}")

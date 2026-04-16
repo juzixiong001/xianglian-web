@@ -1,6 +1,7 @@
 package com.xianglian.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.xianglian.mapper.PolicyMapper;
 import com.xianglian.pojo.Policy;
 import com.xianglian.service.PolicyService;
@@ -50,7 +51,7 @@ public class PolicyServiceImpl implements PolicyService {
     }
 
     @Override
-    public List<Policy> searchPolicies(String title, String type, String area, String sort, Integer page, Integer size) {
+    public PageInfo<Policy> searchPolicies(String title, String type, String area, String sort, Integer page, Integer size) {
         if (page == null || page <= 0) {
             page = 1;
         }
@@ -58,13 +59,7 @@ public class PolicyServiceImpl implements PolicyService {
             size = 10;
         }
         PageHelper.startPage(page, size);
-        return policyMapper.searchPolicies(title, type, area, sort);
-    }
-
-    @Override
-    public int getSearchTotal(String title, String type, String area) {
-        // 这里简化处理，实际项目中应该实现一个专门的count查询
-        List<Policy> policies = policyMapper.searchPolicies(title, type, area, null);
-        return policies.size();
+        List<Policy> policies = policyMapper.searchPolicies(title, type, area, sort);
+        return new PageInfo<>(policies);
     }
 }

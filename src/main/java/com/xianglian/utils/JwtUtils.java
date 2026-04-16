@@ -11,7 +11,7 @@ public class JwtUtils {
     private static final String SECRET_KEY = "xianglian_secret_key";
     private static final long EXPIRATION_TIME = 24 * 60 * 60 * 1000; // 24小时
 
-    public static String generateToken(Integer userId) {
+    public static String generateToken(Long userId) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("userId", userId);
         return Jwts.builder()
@@ -21,13 +21,13 @@ public class JwtUtils {
                 .compact();
     }
 
-    public static Integer getUserIdFromToken(String token) {
+    public static Long getUserIdFromToken(String token) {
         try {
             Map<String, Object> claims = Jwts.parser()
                     .setSigningKey(SECRET_KEY)
                     .parseClaimsJws(token)
                     .getBody();
-            return (Integer) claims.get("userId");
+            return (Long) claims.get("userId");
         } catch (Exception e) {
             return null;
         }

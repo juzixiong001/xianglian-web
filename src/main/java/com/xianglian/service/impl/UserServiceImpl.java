@@ -13,7 +13,7 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Override
-    public User getProfile(Integer userId) {
+    public User getProfile(Long userId) {
         return userMapper.findById(userId);
     }
 
@@ -21,5 +21,16 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void updateProfile(User user) {
         userMapper.update(user);
+    }
+
+    @Override
+    @Transactional
+    public void register(User user) {
+        userMapper.insert(user);
+    }
+
+    @Override
+    public User login(String username, String password) {
+        return userMapper.findByUsernameAndPassword(username, password);
     }
 }

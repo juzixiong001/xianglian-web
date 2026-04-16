@@ -14,7 +14,8 @@ public interface FavoriteMapper {
     @Delete("DELETE FROM favorite WHERE id = #{id}")
     void deleteById(Integer id);
 
-    @Delete("DELETE FROM favorite WHERE id IN (#{ids})")
+
+    @Delete("DELETE FROM favorite WHERE id IN (${ids})")
     void deleteBatch(@Param("ids") String ids);
 
     @Select("SELECT * FROM favorite WHERE user_id = #{userId}")
