@@ -15,7 +15,7 @@ public class JwtInterceptor implements HandlerInterceptor {
         
         // 跳过登录和注册接口的认证
         String path = request.getRequestURI();
-        if (path.equals("/api/login") || path.equals("/api/register") || path.equals("/api/login/") || path.equals("/api/register/")) {
+        if (path.equals("/login") || path.equals("/register") || path.equals("/login/") || path.equals("/register/")) {
             return true;
         }
         
