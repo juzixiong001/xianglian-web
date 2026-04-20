@@ -5,7 +5,6 @@ com\xianglian\service\PolicyService.class
 com\xianglian\config\JwtInterceptor.class
 com\xianglian\service\impl\PostServiceImpl.class
 com\xianglian\mapper\PostMapper.class
-com\xianglian\config\CorsConfig.class
 com\xianglian\config\WebMvcConfig.class
 com\xianglian\service\impl\UserServiceImpl.class
 com\xianglian\pojo\Policy.class
