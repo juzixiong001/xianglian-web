@@ -1,5 +1,10 @@
+D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\annotation\AutoFill.java
+D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\annotation\OperationType.java
+D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\aop\AutoFillAspect.java
 D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\config\JwtInterceptor.java
 D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\config\MyBatisConfig.java
+D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\config\OpenApiConfig.java
+D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\config\TraceIdFilter.java
 D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\config\WebMvcConfig.java
 D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\controller\AuthController.java
 D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\controller\FavoriteController.java
@@ -8,6 +13,8 @@ D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\controller\P
 D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\controller\RootController.java
 D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\controller\UploadController.java
 D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\controller\UserController.java
+D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\exception\BusinessException.java
+D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\exception\GlobalExceptionHandler.java
 D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\mapper\FavoriteMapper.java
 D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\mapper\PolicyMapper.java
 D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\mapper\PostMapper.java
@@ -26,4 +33,5 @@ D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\service\Post
 D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\service\UserService.java
 D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\utils\JwtUtils.java
 D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\utils\Result.java
+D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\utils\TraceContext.java
 D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\XianglianWebApplication.java

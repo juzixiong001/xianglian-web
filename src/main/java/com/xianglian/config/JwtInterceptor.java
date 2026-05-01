@@ -1,11 +1,19 @@
 package com.xianglian.config;
 
 import com.xianglian.utils.JwtUtils;
+import com.xianglian.utils.TraceContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+@Component
 public class JwtInterceptor implements HandlerInterceptor {
+
+    @Autowired
+    private JwtUtils jwtUtils;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         // 处理OPTIONS预检请求
@@ -15,7 +23,10 @@ public class JwtInterceptor implements HandlerInterceptor {
         
         // 跳过登录和注册接口的认证
         String path = request.getRequestURI();
-        if (path.equals("/api/login") || path.equals("/api/register") || path.equals("/api/login/") || path.equals("/api/register/")) {
+        if (path.equals("/api/login") || path.equals("/api/register") 
+            || path.equals("/api/login/") || path.equals("/api/register/")
+            || path.startsWith("/swagger-ui") || path.startsWith("/v3/api-docs")
+            || path.equals("/swagger-ui.html")) {
             return true;
         }
         
@@ -31,7 +42,7 @@ public class JwtInterceptor implements HandlerInterceptor {
             token = request.getParameter("token");
         }
         if (token != null && !token.isEmpty()) {
-            Long userId = JwtUtils.getUserIdFromToken(token);
+            Long userId = jwtUtils.getUserIdFromToken(token);
             if (userId != null) {
                 request.setAttribute("userId", userId);
                 return true;
@@ -40,8 +51,8 @@ public class JwtInterceptor implements HandlerInterceptor {
         
         // 没有token时返回401错误
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.setContentType("application/json");
-        response.getWriter().write("{\"code\": 401, \"message\": \"未授权，请登录\", \"data\": null}");
+        response.setContentType("application/json;charset=UTF-8");
+        response.getWriter().write("{\"code\": 401, \"message\": \"未授权，请登录\", \"data\": null, \"traceId\": \"" + TraceContext.getTraceId() + "\"}");
         return false;
     }
 }

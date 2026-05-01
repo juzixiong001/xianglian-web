@@ -1,6 +1,8 @@
+com\xianglian\annotation\AutoFill.class
 com\xianglian\controller\PostController.class
 com\xianglian\service\impl\PolicyServiceImpl.class
 com\xianglian\service\impl\FavoriteServiceImpl.class
+com\xianglian\config\TraceIdFilter.class
 com\xianglian\service\PolicyService.class
 com\xianglian\config\JwtInterceptor.class
 com\xianglian\service\impl\PostServiceImpl.class
@@ -22,7 +24,9 @@ com\xianglian\pojo\Post.class
 com\xianglian\controller\UploadController.class
 com\xianglian\mapper\FavoriteMapper.class
 com\xianglian\utils\Result.class
+com\xianglian\config\OpenApiConfig.class
 com\xianglian\mapper\PolicyMapper.class
+com\xianglian\utils\TraceContext.class
 com\xianglian\controller\PolicyController.class
 com\xianglian\controller\RootController.class
 com\xianglian\pojo\Favorite.class
