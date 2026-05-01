@@ -23,10 +23,11 @@ public class JwtInterceptor implements HandlerInterceptor {
         
         // 跳过登录和注册接口的认证
         String path = request.getRequestURI();
-        if (path.equals("/api/login") || path.equals("/api/register") 
+        if (path.equals("/api/login") || path.equals("/api/register")
             || path.equals("/api/login/") || path.equals("/api/register/")
+            || path.startsWith("/doc.html") || path.startsWith("/webjars")
             || path.startsWith("/swagger-ui") || path.startsWith("/v3/api-docs")
-            || path.equals("/swagger-ui.html")) {
+            || path.equals("/swagger-ui.html") || path.equals("/favicon.ico")) {
             return true;
         }
         

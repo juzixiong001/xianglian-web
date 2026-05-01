@@ -14,10 +14,10 @@ public class OpenApiConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("xianglian-web API 文档")
+                        .title("xianglian-web 接口文档")
                         .version("1.0.0")
-                        .description("相连项目后端接口文档")
-                        .contact(new Contact().name("开发团队"))
-                        .license(new License().name("Apache 2.0")));
+                        .description("# 简介\n这是一个简洁美观的API文档工具\n\n## 功能特点\n- 在线调试接口\n- 侧边栏导航\n- 接口分组展示")
+                        .contact(new Contact().name("开发团队").url("https://github.com/your-team")))
+                ;
     }
 }

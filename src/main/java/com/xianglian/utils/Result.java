@@ -24,6 +24,16 @@ public class Result<T> {
         return result;
     }
 
+    public static <T> Result<T> success(String message, T data) {
+        Result<T> result = new Result<>();
+        result.setCode(200);
+        result.setMessage(message);
+        result.setData(data);
+        result.setTimestamp(System.currentTimeMillis());
+        result.setTraceId(TraceContext.getTraceId());
+        return result;
+    }
+
     public static <T> Result<T> error(String message) {
         return error(500, message);
     }

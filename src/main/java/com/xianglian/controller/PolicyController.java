@@ -4,6 +4,8 @@ import com.github.pagehelper.PageInfo;
 import com.xianglian.pojo.Policy;
 import com.xianglian.service.PolicyService;
 import com.xianglian.utils.Result;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,11 +15,12 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/policies")
+@Tag(name = "政策模块", description = "惠农政策管理接口")
 public class PolicyController {
     @Autowired
     private PolicyService policyService;
 
-    // 获取政策列表
+    @Operation(summary = "获取所有政策列表")
     @GetMapping
     public Result getAllPolicies() {
         List<Policy> policies = policyService.getAllPolicies();
@@ -27,20 +30,21 @@ public class PolicyController {
         return Result.success(data);
     }
 
-    // 获取政策详情
+    @Operation(summary = "获取政策详情")
     @GetMapping("/{id}")
     public Result getPolicyById(@PathVariable Integer id) {
         Policy policy = policyService.getPolicyById(id);
         return Result.success(policy);
     }
 
-    // 发布政策
+    @Operation(summary = "发布政策")
     @PostMapping
     public Result createPolicy(@RequestBody Policy policy) {
         policyService.createPolicy(policy);
         return Result.success(policy);
     }
 
+    @Operation(summary = "更新政策信息")
     @PutMapping("/{id}")
     public Result updatePolicy(@PathVariable Integer id, @RequestBody Policy policy) {
         policy.setId(id);
@@ -48,6 +52,7 @@ public class PolicyController {
         return Result.success(policy);
     }
 
+    @Operation(summary = "删除政策")
     @DeleteMapping("/{id}")
     public Result deletePolicy(@PathVariable Integer id) {
         policyService.deletePolicy(id);
@@ -57,10 +62,10 @@ public class PolicyController {
         return Result.success(data);
     }
 
+    @Operation(summary = "批量删除政策")
     @DeleteMapping
     public Result deleteBatchPolicies(@RequestParam("ids") String ids) {
         policyService.deleteBatchPolicies(ids);
-        // 计算删除数量
         int deletedCount = ids.split(",").length;
         Map<String, Object> data = new HashMap<>();
         data.put("ids", ids);
@@ -69,7 +74,7 @@ public class PolicyController {
         return Result.success(data);
     }
 
-    // 搜索政策
+    @Operation(summary = "搜索政策")
     @GetMapping("/search")
     public Result searchPolicies(@RequestParam(required = false) String title,
                               @RequestParam(required = false) String type,
