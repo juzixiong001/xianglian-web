@@ -19,25 +19,10 @@ public class RecommendController {
     @Autowired
     private RecommendService recommendService;
 
-    @Operation(summary = "获取用户推荐帖子")
-    @GetMapping("/{userId}")
-    public Result getRecommendations(@PathVariable Integer userId, 
-                                     @RequestParam(defaultValue = "10") Integer limit) {
-        List<Post> recommendations = recommendService.getRecommendations(userId, limit);
-        return Result.success(recommendations);
-    }
-
-    @Operation(summary = "获取热门帖子")
-    @GetMapping("/hot")
-    public Result getHotPosts(@RequestParam(defaultValue = "10") Integer limit) {
-        List<Post> hotPosts = recommendService.getHotPosts(limit);
-        return Result.success(hotPosts);
-    }
-
-    @Operation(summary = "获取个性化推荐")
+    @Operation(summary = "个性化推荐", description = "根据用户收藏或发布过的帖子类型返回同类最新帖子")
     @GetMapping("/personalized")
-    public Result getPersonalizedRecommendations(HttpServletRequest request,
-                                                 @RequestParam(defaultValue = "10") Integer limit) {
+    public Result<List<Post>> getPersonalizedRecommendations(HttpServletRequest request,
+                                                 @RequestParam(defaultValue = "5") Integer limit) {
         Long userId = (Long) request.getAttribute("userId");
         List<Post> recommendations = recommendService.getRecommendations(userId.intValue(), limit);
         return Result.success(recommendations);
