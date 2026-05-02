@@ -5,6 +5,7 @@ D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\config\AICon
 D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\config\JwtInterceptor.java
 D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\config\MyBatisConfig.java
 D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\config\OpenApiConfig.java
+D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\config\SecurityConfig.java
 D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\config\TraceIdFilter.java
 D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\config\WebMvcConfig.java
 D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\controller\AIController.java

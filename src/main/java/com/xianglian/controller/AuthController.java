@@ -5,6 +5,7 @@ import com.xianglian.service.UserService;
 import com.xianglian.utils.JwtUtils;
 import com.xianglian.utils.Result;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class AuthController {
     @Autowired
     private JwtUtils jwtUtils;
 
-    @Operation(summary = "用户注册（用户名+密码）")
+    @Operation(summary = "用户注册", description = "注册参数：用户名、电话、密码")
     @PostMapping("/register")
     public Result<Map<String, Object>> register(@RequestBody User user) {
         userService.register(user);
@@ -31,13 +32,13 @@ public class AuthController {
             String token = jwtUtils.generateToken(loginUser.getId());
             Map<String, Object> data = new HashMap<>();
             data.put("token", token);
-            data.put("user", loginUser);
-            return Result.success(data);
+            data.put("user", buildUserResponse(loginUser));
+            return Result.success("注册成功", data);
         }
-        return Result.success();
+        return Result.success("注册成功", new HashMap<>());
     }
 
-    @Operation(summary = "用户登录（用户名/手机号+密码）")
+    @Operation(summary = "用户登录", description = "登录参数：用户名+密码，也支持手机号+密码")
     @PostMapping("/login")
     public Result<Map<String, Object>> login(@RequestBody User user) {
         User loginUser = userService.login(user.getUsername(), user.getPassword());
@@ -45,8 +46,8 @@ public class AuthController {
             String token = jwtUtils.generateToken(loginUser.getId());
             Map<String, Object> data = new HashMap<>();
             data.put("token", token);
-            data.put("user", loginUser);
-            return Result.success(data);
+            data.put("user", buildUserResponse(loginUser));
+            return Result.success("登录成功", data);
         } else {
             return Result.error(401, "用户名/手机号或密码错误");
         }
@@ -77,7 +78,7 @@ public class AuthController {
         String token = jwtUtils.generateToken(user.getId());
         Map<String, Object> data = new HashMap<>();
         data.put("token", token);
-        data.put("user", user);
+        data.put("user", buildUserResponse(user));
         data.put("defaultPassword", "123456");
         return Result.success("注册成功，初始密码为123456", data);
     }
@@ -97,10 +98,23 @@ public class AuthController {
             String token = jwtUtils.generateToken(user.getId());
             Map<String, Object> data = new HashMap<>();
             data.put("token", token);
-            data.put("user", user);
-            return Result.success(data);
+            data.put("user", buildUserResponse(user));
+            return Result.success("登录成功", data);
         } else {
             return Result.error(401, "该手机号尚未注册");
         }
+    }
+
+    private Map<String, Object> buildUserResponse(User user) {
+        Map<String, Object> userResponse = new HashMap<>();
+        userResponse.put("id", user.getId());
+        userResponse.put("username", user.getUsername());
+        userResponse.put("nickname", user.getNickname());
+        userResponse.put("avatar", user.getAvatar());
+        userResponse.put("phone", user.getPhone());
+        userResponse.put("email", user.getEmail());
+        userResponse.put("createTime", user.getCreateTime());
+        userResponse.put("updateTime", user.getUpdateTime());
+        return userResponse;
     }
 }

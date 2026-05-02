@@ -5,26 +5,20 @@ import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface UserMapper {
-    @Select("SELECT * FROM user WHERE id = #{id}")
+    @Select("SELECT id, username, nickname, avatar, phone, email, create_time, update_time FROM user WHERE id = #{id}")
     User findById(Long id);
 
-    @Insert("INSERT INTO user (username, password, phone, create_time, update_time) VALUES (#{username}, #{password}, #{phone}, NOW(), NOW())")
+    @Insert("INSERT INTO user (username, password, phone, nickname, create_time, update_time) VALUES (#{username}, #{password}, #{phone}, #{nickname}, NOW(), NOW())")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insert(User user);
 
-    @Select("SELECT * FROM user WHERE username = #{username} AND password = #{password}")
-    User findByUsernameAndPassword(String username, String password);
-
-    @Select("SELECT * FROM user WHERE phone = #{phone} AND password = #{password}")
-    User findByPhoneAndPassword(String phone, String password);
-
-    @Select("SELECT * FROM user WHERE phone = #{phone}")
-    User findByPhone(String phone);
-
-    @Select("SELECT * FROM user WHERE username = #{username}")
+    @Select("SELECT id, username, password, nickname, avatar, phone, email, create_time, update_time FROM user WHERE username = #{username}")
     User findByUsername(String username);
 
-    @Update("UPDATE user SET phone = #{phone}, update_time = NOW() WHERE id = #{id}")
+    @Select("SELECT id, username, password, nickname, avatar, phone, email, create_time, update_time FROM user WHERE phone = #{phone}")
+    User findByPhone(String phone);
+
+    @Update("UPDATE user SET phone = #{phone}, nickname = #{nickname}, avatar = #{avatar}, email = #{email}, password = #{password}, update_time = NOW() WHERE id = #{id}")
     void update(User user);
 
     @Select("SELECT COUNT(*) FROM user")

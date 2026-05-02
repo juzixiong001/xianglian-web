@@ -29,6 +29,7 @@ com\xianglian\config\WebMvcConfig.class
 com\xianglian\service\impl\UserServiceImpl.class
 com\xianglian\pojo\Policy.class
 com\xianglian\controller\AuthController.class
+com\xianglian\config\SecurityConfig.class
 com\xianglian\controller\StatisticsController.class
 com\xianglian\service\PostService.class
 com\xianglian\service\impl\AIServiceImpl.class
