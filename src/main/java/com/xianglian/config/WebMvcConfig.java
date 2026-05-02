@@ -24,9 +24,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("https://xiangliantongqu.netlify.app")
+                .allowedOriginPatterns("*")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                .allowedHeaders("*", "Authorization")
+                .allowedHeaders("*")
                 .allowCredentials(true)
                 .maxAge(3600);
     }
