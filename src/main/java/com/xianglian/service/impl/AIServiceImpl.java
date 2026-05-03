@@ -27,6 +27,8 @@ public class AIServiceImpl implements AIService {
     private final Map<String, Long> lastRequestTimes = new ConcurrentHashMap<>();
     private volatile String cachedAccessToken = null;
     private volatile long accessTokenExpireTime = 0;
+    private static final int MIN_RESPONSE_TOKENS = 200;
+    private static final int MAX_RESPONSE_TOKENS = 500;
 
     public AIServiceImpl() {
         this.webClient = WebClient.create();
@@ -35,35 +37,60 @@ public class AIServiceImpl implements AIService {
 
     @Override
     public String chat(String question) {
-        return callAI(question, "你是一个智能助手，请用简洁的语言回答问题，控制在100字以内。");
+        String systemPrompt = "你是一个智能助手，请用详细的语言回答问题。";
+        int dynamicTokens = calculateDynamicTokens(question);
+        return callAI(question, systemPrompt, dynamicTokens);
     }
 
     @Override
     public String matchPolicy(Map<String, Object> userProfile) {
         String profile = formatUserProfile(userProfile);
-        String prompt = "用户信息：" + profile + "\n请根据用户情况推荐1-2条相关农业政策，用简洁语言说明匹配理由，控制在150字以内。";
-        return callAI(prompt, "你是农业政策匹配专家，擅长根据用户情况推荐合适的农业政策。");
+        String prompt = "用户信息：" + profile + "\n请根据用户情况推荐1-2条相关农业政策，用详细语言说明匹配理由。";
+        return callAI(prompt, "你是农业政策匹配专家，擅长根据用户情况推荐合适的农业政策。", 350);
     }
 
     @Override
     public String analyzeSupplyDemand(String query) {
-        String prompt = "供需查询：" + query + "\n请分析供需关系，提供匹配建议，控制在100字以内。";
-        return callAI(prompt, "你是农产品供需分析专家，擅长分析市场供需关系。");
+        String prompt = "供需查询：" + query + "\n请分析供需关系，提供匹配建议。";
+        return callAI(prompt, "你是农产品供需分析专家，擅长分析市场供需关系。", 300);
     }
 
     @Override
     public String optimizeAgriculture(String question) {
-        String prompt = "农业问题：" + question + "\n请提供具体的生产优化建议，控制在150字以内。";
-        return callAI(prompt, "你是农业生产专家，擅长提供农业生产技能优化建议。");
+        String prompt = "农业问题：" + question + "\n请提供具体的生产优化建议。";
+        return callAI(prompt, "你是农业生产专家，擅长提供农业生产技能优化建议。", 400);
     }
 
     @Override
     public String summarizeContent(String content) {
-        String prompt = "请概括以下内容的核心要点，控制在50字以内：\n" + content;
-        return callAI(prompt, "你是内容摘要专家，擅长提炼核心信息。");
+        String prompt = "请概括以下内容的核心要点：\n" + content;
+        return callAI(prompt, "你是内容摘要专家，擅长提炼核心信息。", 300);
     }
 
-    private String callAI(String question, String systemPrompt) {
+    private int calculateDynamicTokens(String question) {
+        int baseTokens = MIN_RESPONSE_TOKENS;
+        int questionLength = question.length();
+        
+        if (questionLength <= 50) {
+            baseTokens = 250;
+        } else if (questionLength <= 100) {
+            baseTokens = 300;
+        } else if (questionLength <= 200) {
+            baseTokens = 350;
+        } else if (questionLength <= 500) {
+            baseTokens = 400;
+        } else {
+            baseTokens = 450;
+        }
+        
+        if (question.contains("分析") || question.contains("详细") || question.contains("解释") || question.contains("说明")) {
+            baseTokens += 50;
+        }
+        
+        return Math.min(Math.max(baseTokens, MIN_RESPONSE_TOKENS), MAX_RESPONSE_TOKENS);
+    }
+
+    private String callAI(String question, String systemPrompt, int maxTokens) {
         String cacheKey = generateCacheKey(question);
         
         if (aiConfig.getCache().isEnabled()) {
@@ -80,9 +107,9 @@ public class AIServiceImpl implements AIService {
         String response;
         try {
             response = switch (aiConfig.getProvider().getType()) {
-                case "tongyi" -> callTongyiAPI(question, systemPrompt);
-                case "deepseek" -> callDeepSeekAPI(question, systemPrompt);
-                default -> callDoubaoAPI(question, systemPrompt);
+                case "tongyi" -> callTongyiAPI(question, systemPrompt, maxTokens);
+                case "deepseek" -> callDeepSeekAPI(question, systemPrompt, maxTokens);
+                default -> callDoubaoAPI(question, systemPrompt, maxTokens);
             };
         } catch (Exception e) {
             return "AI服务暂时不可用，请稍后重试。";
@@ -96,7 +123,7 @@ public class AIServiceImpl implements AIService {
         return response;
     }
 
-    private String callDoubaoAPI(String question, String systemPrompt) throws Exception {
+    private String callDoubaoAPI(String question, String systemPrompt, int maxTokens) throws Exception {
         String accessToken = getDoubaoAccessToken();
         
         Map<String, Object> body = new HashMap<>();
@@ -104,7 +131,7 @@ public class AIServiceImpl implements AIService {
             Map.of("role", "system", "content", systemPrompt),
             Map.of("role", "user", "content", question)
         ));
-        body.put("max_tokens", aiConfig.getProvider().getDoubao().getMaxTokens());
+        body.put("max_tokens", maxTokens);
         body.put("temperature", aiConfig.getProvider().getDoubao().getTemperature());
 
         String response = webClient.post()
@@ -118,7 +145,7 @@ public class AIServiceImpl implements AIService {
         return parseDoubaoResponse(response);
     }
 
-    private String callTongyiAPI(String question, String systemPrompt) throws Exception {
+    private String callTongyiAPI(String question, String systemPrompt, int maxTokens) throws Exception {
         Map<String, Object> body = new HashMap<>();
         body.put("model", "qwen-turbo");
         body.put("input", Map.of(
@@ -128,7 +155,7 @@ public class AIServiceImpl implements AIService {
             )
         ));
         body.put("parameters", Map.of(
-            "max_tokens", aiConfig.getProvider().getTongyi().getMaxTokens(),
+            "max_tokens", maxTokens,
             "temperature", aiConfig.getProvider().getTongyi().getTemperature()
         ));
 
@@ -144,14 +171,14 @@ public class AIServiceImpl implements AIService {
         return parseTongyiResponse(response);
     }
 
-    private String callDeepSeekAPI(String question, String systemPrompt) throws Exception {
+    private String callDeepSeekAPI(String question, String systemPrompt, int maxTokens) throws Exception {
         Map<String, Object> body = new HashMap<>();
         body.put("model", aiConfig.getProvider().getDeepSeek().getModel());
         body.put("messages", Arrays.asList(
             Map.of("role", "system", "content", systemPrompt),
             Map.of("role", "user", "content", question)
         ));
-        body.put("max_tokens", aiConfig.getProvider().getDeepSeek().getMaxTokens());
+        body.put("max_tokens", maxTokens);
         body.put("temperature", aiConfig.getProvider().getDeepSeek().getTemperature());
 
         String response = webClient.post()

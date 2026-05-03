@@ -98,10 +98,12 @@ public class PostController {
     public Result<Map<String, Object>> searchPosts(@RequestParam(required = false) String title,
                             @RequestParam(required = false) String content,
                             @RequestParam(required = false) String type,
+                            @RequestParam(required = false) String province,
+                            @RequestParam(required = false) String city,
                             @RequestParam(required = false, defaultValue = "time_desc") String sort,
                             @RequestParam(required = false, defaultValue = "1") Integer page,
                             @RequestParam(required = false, defaultValue = "10") Integer size) {
-        PageInfo<Post> pageInfo = postService.searchPosts(title, content, type, sort, page, size);
+        PageInfo<Post> pageInfo = postService.searchPosts(title, content, type, province, city, sort, page, size);
         Map<String, Object> data = new HashMap<>();
         data.put("total", pageInfo.getTotal());
         data.put("list", pageInfo.getList());

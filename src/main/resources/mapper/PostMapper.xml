@@ -14,6 +14,12 @@
         <if test="type != null and type != ''">
             AND type = #{type}
         </if>
+        <if test="province != null and province != ''">
+            AND area LIKE CONCAT('%', #{province}, '%')
+        </if>
+        <if test="city != null and city != ''">
+            AND area LIKE CONCAT('%', #{city}, '%')
+        </if>
         <if test="sort != null and sort != ''">
             <choose>
                 <when test="sort == 'time_desc'">

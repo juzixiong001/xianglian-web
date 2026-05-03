@@ -45,7 +45,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PageInfo<Post> searchPosts(String title, String content, String type, String sort, Integer page, Integer size) {
+    public PageInfo<Post> searchPosts(String title, String content, String type, String province, String city, String sort, Integer page, Integer size) {
         if (page == null || page <= 0) {
             page = 1;
         }
@@ -53,7 +53,7 @@ public class PostServiceImpl implements PostService {
             size = 10;
         }
         PageHelper.startPage(page, size);
-        List<Post> posts = postMapper.searchPosts(title, content, type, sort);
+        List<Post> posts = postMapper.searchPosts(title, content, type, province, city, sort);
         return new PageInfo<>(posts);
     }
 }

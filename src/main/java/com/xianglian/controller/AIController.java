@@ -18,7 +18,7 @@ public class AIController {
     @Autowired
     private AIService aiService;
 
-    @Operation(summary = "AI通用问答", description = "支持政策解读、供需分析、农业建议等，通过不同prompt实现")
+    @Operation(summary = "AI通用问答", description = "支持政策解读、供需分析、农业建议等，回答长度根据问题复杂度自动调整（200-500字）")
     @PostMapping("/chat")
     public Result<Map<String, Object>> chat(@RequestBody Map<String, String> request) {
         String prompt = request.get("prompt");
