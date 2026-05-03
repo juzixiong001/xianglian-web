@@ -29,7 +29,6 @@ public class FavoriteController {
         
         String targetType = (String) requestBody.get("targetType");
         Integer targetId = (Integer) requestBody.get("targetId");
-        
         Integer postId = (Integer) requestBody.get("postId");
         
         Favorite favorite = new Favorite();
@@ -45,6 +44,8 @@ public class FavoriteController {
             favorite.setPostId(postId);
             favorite.setTargetType("post");
             favorite.setTargetId(postId);
+        } else {
+            return Result.error("缺少必要参数：targetType/targetId 或 postId");
         }
         
         favoriteService.addFavorite(favorite);
@@ -57,18 +58,6 @@ public class FavoriteController {
         favoriteService.removeFavorite(id);
         Map<String, String> data = new HashMap<>();
         data.put("message", "删除成功");
-        return Result.success(data);
-    }
-
-    @Operation(summary = "批量取消收藏")
-    @DeleteMapping
-    public Result<Map<String, Object>> removeBatchFavorites(@RequestParam("ids") String ids) {
-        favoriteService.removeBatchFavorites(ids);
-        int deletedCount = ids.split(",").length;
-        Map<String, Object> data = new HashMap<>();
-        data.put("ids", ids);
-        data.put("deletedCount", deletedCount);
-        data.put("message", "批量删除成功");
         return Result.success(data);
     }
 
@@ -112,24 +101,6 @@ public class FavoriteController {
         Long userId = (Long) request.getAttribute("userId");
         List<Favorite> favorites = favoriteService.getMyFavorites(userId.intValue());
         return Result.success(favorites);
-    }
-
-    @Operation(summary = "获取收藏数量")
-    @GetMapping("/count")
-    public Result<Map<String, Object>> getFavoriteCount(
-            @RequestParam(required = false) String type,
-            HttpServletRequest request) {
-        Long userId = (Long) request.getAttribute("userId");
-        Integer count;
-        if (type != null && !type.isEmpty()) {
-            count = favoriteService.getFavoriteCountByType(userId.intValue(), type);
-        } else {
-            count = favoriteService.getFavoriteCount(userId.intValue());
-        }
-        
-        Map<String, Object> data = new HashMap<>();
-        data.put("count", count != null ? count : 0);
-        return Result.success(data);
     }
 
     @Operation(summary = "获取我收藏的帖子")
