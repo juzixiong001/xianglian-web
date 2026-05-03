@@ -24,6 +24,9 @@ D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\mapper\Favor
 D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\mapper\PolicyMapper.java
 D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\mapper\PostMapper.java
 D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\mapper\UserMapper.java
+D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\pojo\dto\AreaDTO.java
+D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\pojo\dto\PolicyCreateDTO.java
+D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\pojo\dto\PostCreateDTO.java
 D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\pojo\Favorite.java
 D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\pojo\Policy.java
 D:\java_code\JavaWeb_code\xianglian-web\src\main\java\com\xianglian\pojo\Post.java

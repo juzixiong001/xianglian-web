@@ -2,6 +2,7 @@ package com.xianglian.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.xianglian.pojo.Post;
+import com.xianglian.pojo.dto.PostCreateDTO;
 import com.xianglian.service.PostService;
 import com.xianglian.utils.Result;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,9 +34,17 @@ public class PostController {
 
     @Operation(summary = "创建帖子")
     @PostMapping
-    public Result<Post> createPost(@RequestBody Post post, HttpServletRequest request) {
+    public Result<Post> createPost(@RequestBody PostCreateDTO dto, HttpServletRequest request) {
         Long userId = (Long) request.getAttribute("userId");
+        Post post = new Post();
         post.setUserId(userId.intValue());
+        post.setTitle(dto.getTitle());
+        post.setContent(dto.getContent());
+        post.setType(dto.getType());
+        post.setArea(dto.buildArea());
+        post.setPrice(dto.getPrice());
+        post.setContact(dto.getContact());
+        post.setImages(dto.getImages());
         postService.createPost(post);
         return Result.success(post);
     }

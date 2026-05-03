@@ -4,7 +4,9 @@ com\xianglian\config\TraceIdFilter.class
 com\xianglian\service\PolicyService.class
 com\xianglian\config\AIConfig$DeepSeek.class
 com\xianglian\service\impl\PostServiceImpl.class
+com\xianglian\pojo\dto\PostCreateDTO.class
 com\xianglian\controller\RecommendController.class
+com\xianglian\pojo\dto\AreaDTO.class
 com\xianglian\pojo\User.class
 com\xianglian\controller\AIController.class
 com\xianglian\service\UserService.class
@@ -36,6 +38,7 @@ com\xianglian\service\impl\AIServiceImpl.class
 com\xianglian\service\impl\RecommendServiceImpl.class
 com\xianglian\config\AIConfig$Tongyi.class
 com\xianglian\XianglianWebApplication.class
+com\xianglian\pojo\dto\PolicyCreateDTO.class
 com\xianglian\mapper\UserMapper.class
 com\xianglian\controller\UserController.class
 com\xianglian\service\FavoriteService.class
