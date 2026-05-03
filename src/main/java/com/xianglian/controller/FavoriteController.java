@@ -29,36 +29,40 @@ public class FavoriteController {
         
         String targetType = (String) requestBody.get("targetType");
         Integer targetId = (Integer) requestBody.get("targetId");
-        Integer postId = (Integer) requestBody.get("postId");
         
         Favorite favorite = new Favorite();
         favorite.setUserId(userId.intValue());
         
         if (targetType != null && targetId != null) {
-            favorite.setTargetType(targetType);
-            favorite.setTargetId(targetId);
-            if ("post".equals(targetType)) {
-                favorite.setPostId(targetId);
+            if ("post".equals(targetType) || "policy".equals(targetType)) {
+                favorite.setTargetType(targetType);
+                favorite.setTargetId(targetId);
+            } else {
+                return Result.error("不支持的收藏类型：" + targetType + "，仅支持 post 和 policy");
             }
-        } else if (postId != null) {
-            favorite.setPostId(postId);
-            favorite.setTargetType("post");
-            favorite.setTargetId(postId);
         } else {
-            return Result.error("缺少必要参数：targetType/targetId 或 postId");
+            return Result.error("缺少必要参数：请提供 {targetType, targetId}");
         }
         
-        favoriteService.addFavorite(favorite);
-        return Result.success(favorite);
+        try {
+            favoriteService.addFavorite(favorite);
+            return Result.success(favorite);
+        } catch (Exception e) {
+            return Result.error("添加收藏失败：" + e.getMessage());
+        }
     }
 
     @Operation(summary = "取消单个收藏")
     @DeleteMapping("/{id}")
     public Result<Map<String, String>> removeFavorite(@PathVariable Integer id) {
-        favoriteService.removeFavorite(id);
-        Map<String, String> data = new HashMap<>();
-        data.put("message", "删除成功");
-        return Result.success(data);
+        try {
+            favoriteService.removeFavorite(id);
+            Map<String, String> data = new HashMap<>();
+            data.put("message", "删除成功");
+            return Result.success(data);
+        } catch (Exception e) {
+            return Result.error("删除收藏失败：" + e.getMessage());
+        }
     }
 
     @Operation(summary = "根据目标类型和ID取消收藏")
@@ -68,27 +72,25 @@ public class FavoriteController {
             @RequestParam Integer targetId,
             HttpServletRequest request) {
         Long userId = (Long) request.getAttribute("userId");
-        favoriteService.removeFavoriteByTarget(userId.intValue(), targetType, targetId);
-        Map<String, String> data = new HashMap<>();
-        data.put("message", "删除成功");
-        return Result.success(data);
+        try {
+            favoriteService.removeFavoriteByTarget(userId.intValue(), targetType, targetId);
+            Map<String, String> data = new HashMap<>();
+            data.put("message", "删除成功");
+            return Result.success(data);
+        } catch (Exception e) {
+            return Result.error("删除收藏失败：" + e.getMessage());
+        }
     }
 
     @Operation(summary = "检查是否已收藏")
     @GetMapping("/check")
     public Result<Map<String, Object>> checkFavorite(
-            @RequestParam(required = false) Integer postId,
-            @RequestParam(required = false) String targetType,
-            @RequestParam(required = false) Integer targetId,
+            @RequestParam String targetType,
+            @RequestParam Integer targetId,
             HttpServletRequest request) {
         Long userId = (Long) request.getAttribute("userId");
-        boolean isFavorited = false;
         
-        if (targetType != null && targetId != null) {
-            isFavorited = favoriteService.isFavoriteByTarget(userId.intValue(), targetType, targetId);
-        } else if (postId != null) {
-            isFavorited = favoriteService.isFavorite(userId.intValue(), postId);
-        }
+        boolean isFavorited = favoriteService.isFavoriteByTarget(userId.intValue(), targetType, targetId);
         
         Map<String, Object> data = new HashMap<>();
         data.put("isFavorited", isFavorited);
@@ -99,23 +101,35 @@ public class FavoriteController {
     @GetMapping("/my")
     public Result<List<Favorite>> getMyFavorites(HttpServletRequest request) {
         Long userId = (Long) request.getAttribute("userId");
-        List<Favorite> favorites = favoriteService.getMyFavorites(userId.intValue());
-        return Result.success(favorites);
+        try {
+            List<Favorite> favorites = favoriteService.getMyFavorites(userId.intValue());
+            return Result.success(favorites);
+        } catch (Exception e) {
+            return Result.error("获取收藏列表失败：" + e.getMessage());
+        }
     }
 
     @Operation(summary = "获取我收藏的帖子")
     @GetMapping("/my/posts")
     public Result<List<Post>> getMyFavoritePosts(HttpServletRequest request) {
         Long userId = (Long) request.getAttribute("userId");
-        List<Post> posts = favoriteService.getMyFavoritePosts(userId.intValue());
-        return Result.success(posts);
+        try {
+            List<Post> posts = favoriteService.getMyFavoritePosts(userId.intValue());
+            return Result.success(posts);
+        } catch (Exception e) {
+            return Result.error("获取收藏帖子失败：" + e.getMessage());
+        }
     }
 
     @Operation(summary = "获取我收藏的政策")
     @GetMapping("/my/policies")
     public Result<List<Policy>> getMyFavoritePolicies(HttpServletRequest request) {
         Long userId = (Long) request.getAttribute("userId");
-        List<Policy> policies = favoriteService.getMyFavoritePolicies(userId.intValue());
-        return Result.success(policies);
+        try {
+            List<Policy> policies = favoriteService.getMyFavoritePolicies(userId.intValue());
+            return Result.success(policies);
+        } catch (Exception e) {
+            return Result.error("获取收藏政策失败：" + e.getMessage());
+        }
     }
 }

@@ -46,6 +46,7 @@ com\xianglian\mapper\FavoriteMapper.class
 com\xianglian\utils\Result.class
 com\xianglian\config\OpenApiConfig.class
 com\xianglian\config\AIConfig$RateLimit.class
+com\xianglian\exception\GlobalExceptionHandler.class
 com\xianglian\controller\RootController.class
 com\xianglian\pojo\Favorite.class
 com\xianglian\utils\JwtUtils.class

@@ -37,7 +37,7 @@ public interface FavoriteMapper {
     @Delete("DELETE FROM favorite WHERE user_id = #{userId} AND target_type = #{targetType} AND target_id = #{targetId}")
     void deleteByUserIdAndTarget(@Param("userId") Integer userId, @Param("targetType") String targetType, @Param("targetId") Integer targetId);
 
-    @Select("SELECT p.* FROM post p INNER JOIN favorite f ON p.id = f.post_id WHERE f.user_id = #{userId} ORDER BY f.create_time DESC")
+    @Select("SELECT p.* FROM post p INNER JOIN favorite f ON p.id = f.target_id WHERE f.user_id = #{userId} AND f.target_type = 'post' ORDER BY f.create_time DESC")
     List<Post> findFavoritePostsByUserId(Integer userId);
 
     @Select("SELECT p.* FROM policy p INNER JOIN favorite f ON p.id = f.target_id WHERE f.user_id = #{userId} AND f.target_type = 'policy' ORDER BY f.create_time DESC")
